@@ -156,6 +156,8 @@ public class WorldRenderer implements Disposable
 					//font.draw(batch2,"Ground x: "+worldController.ground.getGroundBounds().getPosition(new Vector2()) ,150, 80);
 					//font.draw(batch2,"Ground y: "+worldController.ground.getGroundBoundsXY("y") ,380, 20);
 					font.draw(batch2,"Pontos: "+Constants.pontos ,0, 530);
+					font.draw(batch2,"Mouse x: "+Constants.mousex ,100, 500);
+					font.draw(batch2,"Mouse y: "+Constants.mousey ,200, 500);
 					font.draw(batch2,"Por Favor Aperte a Tecla Space para iniciar o Jogo" ,0, 400);
 					font.draw(batch2,"Time elapsed in seconds = "+ Constants.elepsedTime,0, 550);
 					if(Constants.state=="started")

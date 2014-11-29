@@ -18,6 +18,9 @@ public class Constants
 	public static long elepsedTime;
 	//Gamestate
 	public static String state;
+	//Mouse
+	public static int mousex;
+	public static int mousey;
 	
 	
 }

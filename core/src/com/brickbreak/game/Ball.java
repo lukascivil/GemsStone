@@ -95,6 +95,18 @@ public class Ball
 		//bounds.y+=newy;
 		bounds.y=newy;
 	}
+	//-----------------to walk :)--------------------
+	public void setBallBoundsXConstant(int newx)
+	{
+		bounds.x+=newx;
+		
+	}
+	public void setBallBoundsYConstant(int newy)
+	{
+		bounds.y+=newy;
+		
+	}
+	//----------------------------------------------------
 	public float getBallBoundsXY(String valor)
 	{
 		

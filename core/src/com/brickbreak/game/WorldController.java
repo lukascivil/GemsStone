@@ -57,8 +57,14 @@ public class WorldController implements InputProcessor
 	public Array<Tuple> localdosnullslinha  = new Array<Tuple>();
 	public Array<Tuple> localdosnullscoluna  = new Array<Tuple>();
 	public boolean removelinha;
+	public boolean inserelinha;
+	public boolean andalinha;
 	public boolean removecoluna;
+	public boolean inserecoluna;
+	public boolean andacoluna;
 	public int aux;
+	public boolean auxl;
+	public boolean auxc;
 
 	
 	/*
@@ -125,9 +131,17 @@ ex:
 			localdosnullscoluna.add(new Tuple());
 			localdosnullscoluna.add(new Tuple());
 			removelinha=false;
+			inserelinha=false;
+			andalinha=false;
 			removecoluna=false;		
-			
+			inserecoluna=false;	
+			andacoluna=false;
+			auxl=true;
+			auxc=true;
+				
+			//MOUSE
 		    mouse = new Mouse(100,600);
+
 		    	//pode utilizar as duas maneiras
 			 	//ballsprite= ball.getBallSprite();	
 			 	//balltexture= ball.getBallTexture();
@@ -158,7 +172,9 @@ ex:
 		}
 		public void update() //loop
 		{
-			//System.out.println(balls[1][1].getBallName());
+			//MOUSE
+		    Constants.mousex = (int) mouse.getMouseBoundsXY("x");
+		    Constants.mousey = (int) mouse.getMouseBoundsXY("y");
 			//time of the game
 			if(Constants.state=="started")
 			{
@@ -170,7 +186,9 @@ ex:
 					dispose();
 				}
 			}
-			//REMOVE3, ANALISA SE TEM 3 NOMES IGUAIS NUMA LINHA
+		//REMOVE3, ANALISA SE TEM 3 NOMES IGUAIS NUMA LINHA
+		if(removecoluna==false)
+		{	
 			outerloop2:
 			for(i=0;i<6;i++)
 			{	
@@ -185,32 +203,20 @@ ex:
 								if(balls[i][j].getBallName()==balls[i][j+1].getBallName())
 								{
 									if(balls[i][j+1].getBallName()==balls[i][j+2].getBallName())
-									{
-										removelinha=true;
-										//localdosnulls
-			
-										localdosnullslinha.get(0).setTuple((int)balls[i][j].getBallBoundsXY("x"), (int)balls[i][j].getBallBoundsXY("y"));
-										localdosnullslinha.get(1).setTuple((int)balls[i][j+1].getBallBoundsXY("x"), (int)balls[i][j+1].getBallBoundsXY("y"));
-										localdosnullslinha.get(2).setTuple((int)balls[i][j+2].getBallBoundsXY("x"), (int)balls[i][j+2].getBallBoundsXY("y"));
-										//aux = localdosnulls.get(0).getX();
-										/*System.out.println(localdosnullslinha.get(0).getX());
-										System.out.println(localdosnullslinha.get(0).getY());
-										System.out.println("---------------------------");
-										System.out.println(localdosnullslinha.get(1).getX());
-										System.out.println(localdosnullslinha.get(1).getY());
-										System.out.println("---------------------------");
-										System.out.println(localdosnullslinha.get(2).getX());
-										System.out.println(localdosnullslinha.get(2).getY());
-										System.out.println("---------------------------");
-										*/
-										balls[i][j]=null;
-										balls[i][j+1]=null;
-										balls[i][j+2]=null;
+									{		
 										if(Constants.state=="started")
-										{
-											Constants.pontos+=3;
-										}
-										
+										{	
+											//localdosnulls
+											if(auxl==true)
+											{
+												andalinha=true;
+												localdosnullslinha.get(0).setTuple((int)balls[i][j].getBallBoundsXY("x"), (int)balls[i][j].getBallBoundsXY("y"));
+												localdosnullslinha.get(1).setTuple((int)balls[i][j+1].getBallBoundsXY("x"), (int)balls[i][j+1].getBallBoundsXY("y"));
+												localdosnullslinha.get(2).setTuple((int)balls[i][j+2].getBallBoundsXY("x"), (int)balls[i][j+2].getBallBoundsXY("y"));
+												auxl=false;
+												Constants.pontos+=3;
+											}			
+										}	
 										break outerloop2;
 									}
 								}	
@@ -220,9 +226,117 @@ ex:
 				
 				}
 			}
+		}
+			
+			if(andalinha==true)
+			{
+				if(balls[i][j].getBallBoundsXY("x")>20 || balls[i][j].getBallBoundsXY("y")>100)
+				{	
+					
+					if(balls[i][j].getBallBoundsXY("x")>20)
+					{
+						balls[i][j].setBallBoundsXConstant(-3);	
+					}
+					if(balls[i][j].getBallBoundsXY("y")>100)
+					{
+						balls[i][j].setBallBoundsYConstant(-3);
+					}
+					if(balls[i][j].getBallBoundsXY("y")<100)
+					{
+						balls[i][j].setBallBoundsYConstant(3);
+					}	
+					
+					if((balls[i][j].getBallBoundsXY("x")>16 && balls[i][j].getBallBoundsXY("x")<24) && (balls[i][j].getBallBoundsXY("y")>96 && balls[i][j].getBallBoundsXY("y")<104))
+					{
+						balls[i][j].setBallBoundsX(20);
+						balls[i][j].setBallBoundsY(100);
+						//System.out.println("dando merda ainda");
+						//auxl=true;
+						//andalinha=false;
+					}	
+				}
+				//----------------------------------------------------------------------------------------------------
+				if(balls[i][j+1].getBallBoundsXY("x")>120 || balls[i][j+1].getBallBoundsXY("y")>100)
+				{	
+					
+					if(balls[i][j+1].getBallBoundsXY("x")>120)
+					{
+						balls[i][j+1].setBallBoundsXConstant(-3);	
+					}
+					if(balls[i][j+1].getBallBoundsXY("y")>100)
+					{
+						balls[i][j+1].setBallBoundsYConstant(-3);
+					}
+					if(balls[i][j+1].getBallBoundsXY("y")<100)
+					{
+						balls[i][j+1].setBallBoundsYConstant(3);
+					}	
+					
+					if((balls[i][j+1].getBallBoundsXY("x")>116 && balls[i][j+1].getBallBoundsXY("x")<124) && (balls[i][j].getBallBoundsXY("y")>96 && balls[i][j+1].getBallBoundsXY("y")<104))
+					{
+						balls[i][j+1].setBallBoundsX(120);
+						balls[i][j+1].setBallBoundsY(100);
+						//System.out.println("dando merda ainda");
+						//auxl=true;
+						//andalinha=false;
+					}	
+				}
+				//----------------------------------------------------------------------------------------------------
+				if(balls[i][j+2].getBallBoundsXY("x")>220 || balls[i][j+2].getBallBoundsXY("y")>100)
+				{	
+					
+					if(balls[i][j+2].getBallBoundsXY("x")>220)
+					{
+						balls[i][j+2].setBallBoundsXConstant(-3);	
+					}
+					if(balls[i][j+2].getBallBoundsXY("y")>100)
+					{
+						balls[i][j+2].setBallBoundsYConstant(-3);
+					}
+					if(balls[i][j+2].getBallBoundsXY("y")<100)
+					{
+						balls[i][j+2].setBallBoundsYConstant(3);
+					}	
+					
+					if((balls[i][j+2].getBallBoundsXY("x")>216 && balls[i][j+2].getBallBoundsXY("x")<224) && (balls[i][j+2].getBallBoundsXY("y")>96 && balls[i][j+2].getBallBoundsXY("y")<104))
+					{
+						balls[i][j+2].setBallBoundsX(220);
+						balls[i][j+2].setBallBoundsY(100);
+						//System.out.println("dando merda ainda");
+						auxl=true;
+						andalinha=false;
+						removelinha=true;
+					}	
+				}
+
+			}
+			
+			
+		//REMOVE3
+		if(Constants.state=="started")
+		{
+			if(removelinha==true)
+			{
+				if(balls[i][j].getBallBoundsXY("x")==20 && balls[i][j].getBallBoundsXY("y")==100)
+				{
+					if(balls[i][j+1].getBallBoundsXY("x")==120 && balls[i][j+1].getBallBoundsXY("y")==100)
+					{
+						if(balls[i][j+2].getBallBoundsXY("x")==220 && balls[i][j+2].getBallBoundsXY("y")==100)
+						{
+							balls[i][j]=null;
+							balls[i][j+1]=null;
+							balls[i][j+2]=null;
+							inserelinha=true;
+						}
+					}
+						
+				}
+			}
+		removelinha=false;	
+		}
 		
 		//INSERE3 ,ANALISA SE TEM NULL NA MATRIZ PRA INSERIR NOVAS GEMAS
-		if(removelinha==true)
+		if(inserelinha==true)
 		{	
 			aux=0;
 			for(i=0;i<6;i++)
@@ -238,11 +352,14 @@ ex:
 		    		 }
 			    }
 		    }
-		removelinha=false;
+		inserelinha=false;
 		}	
 			
 
 			//------------------------------------------------------------------------------------------------------------
+		//REMOVE3, ANALISA SE TEM 3 NOMES IGUAIS NUMA COLUNA
+		if(removelinha==false)
+		{	
 			outerloop :
 			for(j=0;j<6;j++)
 			{	
@@ -258,32 +375,23 @@ ex:
 								{
 									if(balls[i+1][j].getBallName()==balls[i+2][j].getBallName())
 									{
-										removecoluna=true;
-										//localdosnulls
-			
-										localdosnullscoluna.get(0).setTuple((int)balls[i][j].getBallBoundsXY("x"), (int)balls[i][j].getBallBoundsXY("y"));
-										localdosnullscoluna.get(1).setTuple((int)balls[i+1][j].getBallBoundsXY("x"), (int)balls[i+1][j].getBallBoundsXY("y"));
-										localdosnullscoluna.get(2).setTuple((int)balls[i+2][j].getBallBoundsXY("x"), (int)balls[i+2][j].getBallBoundsXY("y"));
-										//aux = localdosnulls.get(0).getX();
-										/*
-										System.out.println(localdosnullscoluna.get(0).getX());
-										System.out.println(localdosnullscoluna.get(0).getY());
-										System.out.println("---------------------------");
-										System.out.println(localdosnullscoluna.get(1).getX());
-										System.out.println(localdosnullscoluna.get(1).getY());
-										System.out.println("---------------------------");
-										System.out.println(localdosnullscoluna.get(2).getX());
-										System.out.println(localdosnullscoluna.get(2).getY());
-										System.out.println("---------------------------");
-										*/
-										balls[i][j]=null;
-										balls[i+1][j]=null;
-										balls[i+2][j]=null;
 										if(Constants.state=="started")
 										{
-											Constants.pontos+=3;
+											if(auxc==true)
+											{
+												andacoluna=true;
+												//localdosnulls
+											
+												localdosnullscoluna.get(0).setTuple((int)balls[i][j].getBallBoundsXY("x"), (int)balls[i][j].getBallBoundsXY("y"));
+												localdosnullscoluna.get(1).setTuple((int)balls[i+1][j].getBallBoundsXY("x"), (int)balls[i+1][j].getBallBoundsXY("y"));
+												localdosnullscoluna.get(2).setTuple((int)balls[i+2][j].getBallBoundsXY("x"), (int)balls[i+2][j].getBallBoundsXY("y"));
+												auxc=false;
+												System.out.println("set localdosnullscoluna");
+												Constants.pontos+=3;	
+											
+											}	
 										}
-										break outerloop;
+									break outerloop;	
 									}
 								}	
 							}
@@ -292,10 +400,120 @@ ex:
 				
 				}
 			}
+		}
+		
+		
+		
+		if(andacoluna==true)
+		{
+			if(balls[i][j].getBallBoundsXY("x")>20 || balls[i][j].getBallBoundsXY("y")>100)
+			{	
+				
+				if(balls[i][j].getBallBoundsXY("x")>20)
+				{
+					balls[i][j].setBallBoundsXConstant(-3);	
+				}
+				if(balls[i][j].getBallBoundsXY("y")>100)
+				{
+					balls[i][j].setBallBoundsYConstant(-3);
+				}
+				if(balls[i][j].getBallBoundsXY("y")<100)
+				{
+					balls[i][j].setBallBoundsYConstant(3);
+				}	
+				
+				if((balls[i][j].getBallBoundsXY("x")>16 && balls[i][j].getBallBoundsXY("x")<24) && (balls[i][j].getBallBoundsXY("y")>96 && balls[i][j].getBallBoundsXY("y")<104))
+				{
+					balls[i][j].setBallBoundsX(20);
+					balls[i][j].setBallBoundsY(100);
+					//System.out.println("dando merda ainda");
+					//auxc=true;
+					//andacoluna=false;
+				}	
+			}
+			//----------------------------------------------------------------------------------------------------
+			if(balls[i+1][j].getBallBoundsXY("x")>20 || balls[i+1][j].getBallBoundsXY("y")>200)
+			{	
+				
+				if(balls[i+1][j].getBallBoundsXY("x")>20)
+				{
+					balls[i+1][j].setBallBoundsXConstant(-3);	
+				}
+				if(balls[i+1][j].getBallBoundsXY("y")>200)
+				{
+					balls[i+1][j].setBallBoundsYConstant(-3);
+				}
+				if(balls[i+1][j].getBallBoundsXY("y")<200)
+				{
+					balls[i+1][j].setBallBoundsYConstant(3);
+				}	
+				
+				if((balls[i+1][j].getBallBoundsXY("x")>16 && balls[i+1][j].getBallBoundsXY("x")<24) && (balls[i+1][j].getBallBoundsXY("y")>196 && balls[i+1][j].getBallBoundsXY("y")<204))
+				{
+					balls[i+1][j].setBallBoundsX(20);
+					balls[i+1][j].setBallBoundsY(200);
+					//System.out.println("dando merda ainda");
+					//auxc=true;
+					//andacoluna=false;
+				}	
+			}
+			//----------------------------------------------------------------------------------------------------
+			if(balls[i+2][j].getBallBoundsXY("x")>20 || balls[i][j+2].getBallBoundsXY("y")>300)
+			{	
+				
+				if(balls[i+2][j].getBallBoundsXY("x")>20)
+				{
+					balls[i+2][j].setBallBoundsXConstant(-3);	
+				}
+				if(balls[i+2][j].getBallBoundsXY("y")>300)
+				{
+					balls[i+2][j].setBallBoundsYConstant(-3);
+				}
+				if(balls[i+2][j].getBallBoundsXY("y")<300)
+				{
+					balls[i+2][j].setBallBoundsYConstant(3);
+				}	
+				
+				if((balls[i+2][j].getBallBoundsXY("x")>16 && balls[i+2][j].getBallBoundsXY("x")<24) && (balls[i+2][j].getBallBoundsXY("y")>296 && balls[i+2][j].getBallBoundsXY("y")<304))
+				{
+					balls[i+2][j].setBallBoundsX(20);
+					balls[i+2][j].setBallBoundsY(300);
+					//System.out.println("dando merda ainda");
+					auxc=true;
+					andacoluna=false;
+					removecoluna=true;
+				}	
+			}
+
+		}
+		
+		
+			//REMOVE3
+			if(Constants.state=="started")
+			{
+				if(removecoluna==true)
+				{
+					if(balls[i][j].getBallBoundsXY("x")==20 && balls[i][j].getBallBoundsXY("y")==100)
+					{
+						if(balls[i+1][j].getBallBoundsXY("x")==20 && balls[i+1][j].getBallBoundsXY("y")==200)
+						{
+							if(balls[i+2][j].getBallBoundsXY("x")==20 && balls[i+2][j].getBallBoundsXY("y")==300)
+							{
+								System.out.println("coluna removida");
+								balls[i][j]=null;
+								balls[i+1][j]=null;
+								balls[i+2][j]=null;
+								inserecoluna=true;
+							}
+						}
+					}	
+				}
+			removecoluna=false;	
+			}
 			
 			
 			//INSERE3 ,ANALISA SE TEM NULL NA MATRIZ PRA INSERIR NOVAS GEMAS
-			if(removecoluna==true)
+			if(inserecoluna==true)
 			{	
 				aux=0;
 				for(i=0;i<6;i++)
@@ -311,7 +529,7 @@ ex:
 			    		 }
 				    }
 			    }
-			removecoluna=false;
+			inserecoluna=false;
 			}
 			
 			//------------------------------------------------------------------------------------------------------------
@@ -414,10 +632,12 @@ ex:
 				{
 					//ground.setGroundBoundsY(-5);
 				}
+				*/
+				
 				if(Gdx.input.isKeyPressed(Keys.W))
 				{
-					//ground.setGroundBoundsY(5);
-				}*/
+					balls[i][j].setBallBoundsXConstant(-1);
+				}
 				
 			}
 			if(Gdx.app.getType()==ApplicationType.Android)
@@ -485,7 +705,8 @@ ex:
 		}
 		@Override
 		public boolean keyTyped(char character) {
-			// TODO Auto-generated method stub
+			//balls[i][j].setBallBoundsXConstant(-2);
+			System.out.println("oi15166511651651");
 			return false;
 		}
 		@Override
@@ -569,7 +790,7 @@ ex:
 												balls[i][j].setBallBoundsY(y1);	
 												balls[auxi][auxj].setBallBoundsY(y0);
 												
-												Constants.pontos=-2;
+												Constants.pontos= Constants.pontos -2;
 												System.out.println("volta vagabundo");
 												//System.out.println("x0: "+x0);
 												//System.out.println("x1: "+x1);
